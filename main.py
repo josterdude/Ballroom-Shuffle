@@ -13,6 +13,8 @@ class Ballroom_Shuffle():
                                                        redirect_uri=cred.redirect_url,
                                                        scope=self.scope))
         self.user_id = '31f2tij4ghid3hnzc4ufiaieh5ny'
+        self.allow_duplicates = False
+        self.temporary_number = 1
 
         self.all_playlists_details = self.sp.current_user_playlists()
         self.all_playlists = {}
@@ -52,7 +54,6 @@ class Ballroom_Shuffle():
         #print(f"Latin playlists:\n{self.latin_playlist_ids}\n-----------------")
         #print(f"Rhythm playlists:\n{self.rhythm_playlist_ids}\n-----------------")
         #print(f"Nightclub playlists:\n{self.nightclub_playlist_ids}\n-----------------")
-        self.allow_duplicates = False
 
     def update_all_playlists(self):
         self.all_playlists_details = self.sp.current_user_playlists()
@@ -176,7 +177,7 @@ class Ballroom_Shuffle():
 
     def create_playlist(self, playlist_name, preferences, shuffle=False):
         # Create a playlist called "test"
-        ballroom_shuffle.sp.user_playlist_create(ballroom_shuffle.user_id, playlist_name + ' - Temporary')
+        ballroom_shuffle.sp.user_playlist_create(ballroom_shuffle.user_id, playlist_name + ' - Temporary ' + self.temporary_number)
 
         # Ensure newly created playlist is included in dictionary containing all playlists
         ballroom_shuffle.update_all_playlists()
@@ -351,7 +352,8 @@ class Ballroom_Shuffle():
         if shuffle:
             songs_to_add_to_playlist = np.random.shuffle(songs_to_add_to_playlist)
 
-        ballroom_shuffle.sp.playlist_add_items(ballroom_shuffle.all_playlists[playlist_name + ' - Temporary']['id'], songs_to_add_to_playlist)
+        ballroom_shuffle.sp.playlist_add_items(ballroom_shuffle.all_playlists[playlist_name + ' - Temporary ' + self.temporary_number]['id'], songs_to_add_to_playlist)
+        self.temporary_number += 1
 
     # TODO: "Save the playlist" by renaming with the function user_playlist_change_details(user, playlist_id, name=None, public=True)
 
@@ -364,6 +366,8 @@ class Ballroom_Shuffle():
             print(f"Removing playlist: {playlist_name}")
             ballroom_shuffle.sp.current_user_unfollow_playlist(self.all_playlists.get(playlist_name)['id'])
             self.all_playlists.pop(playlist_name)
+        else:
+            print(f"Provided playlist name ({playlist_name}) does not exist. Please provide a valid playlist name.")
 
     def delete_temporary_playlists(self):
         # Ensure all playlist information is updated
@@ -404,23 +408,23 @@ if __name__ == '__main__':
 
 
     '''
-    print(f'Latin Rumba Songs: {latin_rumba}')
-    print('======================')
-    print(f'Latin Samba Songs: {latin_samba}')
-    print('======================')
-    print(f'Latin Jive Songs: {latin_jive}')
+    # TODO: This is for adding songs to an existing playlist or randomly selecting new songs after presenting the selection to user
+    current_playlist_songs = [song['name'] for song in ballroom_shuffle.get_playlist_tracks('test')]
+    print(f"Current playlist songs: {current_playlist_songs}")
+    print(f'===================')
+    for song in random_latin_cha:
+        if ballroom_shuffle.allow_duplicates or (song['name'] not in current_playlist_songs):
+            print(f"Adding {song['name']} by {song['artists'][0]['name']} to playlist")
+            songs_to_add_to_playlist.append(song['id'])
+        elif song['name'] in current_playlist_songs:
+            print(f"{song['name']} is already in the playlist")
+            new_song = np.random.choice(latin_cha, replace=False)
+            while new_song in current_playlist_songs:
+                new_song = np.random.choice(latin_cha, replace=False)
+            print(f"Adding {new_song['name']} by {new_song['artists'][0]['name']} to playlist instead")
+            songs_to_add_to_playlist.append(new_song['id'])
+        print('-------------------')
     '''
-
-    # Remove a playlist called "test"
-    '''
-    for playlist in ballroom_shuffle.all_playlists:
-        if 'test' in playlist['name']:
-            print(f"Removing playlist: {playlist['name']}")
-            ballroom_shuffle.sp.current_user_unfollow_playlist(playlist['id'])
-    '''
-
-    #print(ballroom_shuffle.sp.user_playlists(ballroom_shuffle.user_id)['items'][0])
-    #ballroom_shuffle.sp.user_playlist_unfollow(ballroom_shuffle.user_id, )
-
+    #print(f"Adding {latin_cha[0]['track']['name']} by {latin_cha[0]['track']['artists'][0]['name']}")
 
 # TODO: Ensure that random songs being added to the playlist do not already exist in the playlist unless the user specifies that duplicates are enabled. If duplicates are not enabled, randomly choose a new song
