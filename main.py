@@ -52,6 +52,7 @@ class Ballroom_Shuffle():
         #print(f"Latin playlists:\n{self.latin_playlist_ids}\n-----------------")
         #print(f"Rhythm playlists:\n{self.rhythm_playlist_ids}\n-----------------")
         #print(f"Nightclub playlists:\n{self.nightclub_playlist_ids}\n-----------------")
+        self.allow_duplicates = False
 
     def update_all_playlists(self):
         self.all_playlists_details = self.sp.current_user_playlists()
@@ -101,7 +102,17 @@ class Ballroom_Shuffle():
                 exit(f'Provided dance name ({dance_name}) is not valid. Please\
                      enter a valid dance name ({self.valid_rhythm_dance_names}).')
 
-    def get_playlist_tracks(self, style_name, dance_name):
+    def get_playlist_tracks(self, playlist_name):
+        if playlist_name in self.all_playlists.keys():
+            playlist_items = self.sp.playlist_tracks(self.all_playlists.get(playlist_name)['id'])['items']
+            playlist_tracks = []
+            for item in playlist_items:
+                playlist_tracks.append(item['track'])
+            return playlist_tracks
+        else:
+            print(f"Provided playlist name ({playlist_name}) does not exist.")
+
+    def get_style_dance_tracks(self, style_name, dance_name):
         if style_name == 'Standard':
             if dance_name in self.valid_standard_dance_names:
                 if dance_name == 'Viennese Waltz':
