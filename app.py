@@ -1,8 +1,11 @@
 from cgitb import html
 from flask import Flask
 from flask import Flask, session, url_for, redirect, render_template, request, abort, flash
+from main import Ballroom_Shuffle
 
 app = Flask(__name__)
+ballroom_shuffle = Ballroom_Shuffle()
+ballroom_shuffle.load_ballroom_playlists()
 
 @app.route("/")
 def main():
@@ -37,7 +40,13 @@ def custom():
                     'Rhythm Cha Cha': num_rhythm_cha_cha, 'Rhythm Rumba': num_rhythm_rumba, 'Rhythm Swing': num_rhythm_swing, 'Rhythm Mambo': num_rhythm_mambo,
                     'Nightclub Salsa': num_nightclub_salsa, 'Nightclub Bachata': num_nightclub_bachata, 'Nightclub Merengue': num_nightclub_merengue}
 
-    return render_template('/custom.html')
+    len_playlists = {'Standard Waltz': len(ballroom_shuffle.standard_waltz), 'Standard Tango': len(ballroom_shuffle.standard_tango), 'Standard Foxtrot': len(ballroom_shuffle.standard_foxtrot), 'Standard Quickstep': len(ballroom_shuffle.standard_quickstep), 'Standard Viennese Waltz': len(ballroom_shuffle.standard_v_waltz),
+                    'Smooth Waltz': len(ballroom_shuffle.smooth_waltz), 'Smooth Tango': len(ballroom_shuffle.smooth_tango), 'Smooth Foxtrot': len(ballroom_shuffle.smooth_foxtrot), 'Smooth Viennese Waltz': len(ballroom_shuffle.smooth_v_waltz),
+                    'Latin Cha Cha': len(ballroom_shuffle.latin_cha_cha), 'Latin Rumba': len(ballroom_shuffle.latin_rumba), 'Latin Samba': len(ballroom_shuffle.latin_samba), 'Latin Jive': len(ballroom_shuffle.latin_jive),
+                    'Rhythm Cha Cha': len(ballroom_shuffle.rhythm_cha_cha), 'Rhythm Rumba': len(ballroom_shuffle.rhythm_rumba), 'Rhythm Swing': len(ballroom_shuffle.rhythm_swing), 'Rhythm Mambo': len(ballroom_shuffle.rhythm_mambo),
+                    'Nightclub Salsa': len(ballroom_shuffle.nightclub_salsa), 'Nightclub Bachata': len(ballroom_shuffle.nightclub_bachata), 'Nightclub Merengue': len(ballroom_shuffle.nightclub_merengue)}
+
+    return render_template('/custom.html', len_playlists = len_playlists)
 
 
 
