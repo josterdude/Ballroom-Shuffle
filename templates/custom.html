@@ -1,66 +1,71 @@
 <h1>Make a custom playlist</h1>
 <p>How many of each song would you like?</p>
 
-<form>
-    <input type="number" id="Standard Waltz" name="Standard Waltz" min=0 max={{ len_playlists.get('Standard Waltz') }} value=0>
+<form method = "POST">
+    <input type="number" id="Standard Waltz" name="Standard Waltz" min=0 max={{ ballroom_shuffle.standard_waltz | length }} value=0>
     <label for="Standard Waltz">Standard Waltz:</label>
     <br>
-    <input type="number" id="Standard Tango" name="Standard Tango" min=0 max={{ len_playlists.get('Standard Tango') }} value=0>
+    <input type="number" id="Standard Tango" name="Standard Tango" min=0 max={{ ballroom_shuffle.standard_tango | length }} value=0>
     <label for="Standard Tango">Standard Tango:</label>
     <br>
-    <input type="number" id="Standard Foxtrot" name="Standard Foxtrot" min=0 max={{ len_playlists.get('Standard Foxtrot') }} value=0>
+    <input type="number" id="Standard Foxtrot" name="Standard Foxtrot" min=0 max={{ ballroom_shuffle.standard_foxtrot | length }} value=0>
     <label for="Standard Foxtrot">Standard Foxtrot:</label>
     <br>
-    <input type="number" id="Standard Quickstep" name="Standard Quickstep" min=0 max={{ len_playlists.get('Standard Quickstep') }} value=0>
+    <input type="number" id="Standard Quickstep" name="Standard Quickstep" min=0 max={{ ballroom_shuffle.standard_quickstep | length }} value=0>
     <label for="Standard Quickstep">Standard Quickstep:</label>
     <br>
-    <input type="number" id="Standard Viennese Waltz" name="Standard Viennese Waltz" min=0 max={{ len_playlists.get('Standard Viennese Waltz') }} value=0>
+    <input type="number" id="Standard Viennese Waltz" name="Standard Viennese Waltz" min=0 max={{ ballroom_shuffle.standard_v_waltz | length }} value=0>
     <label for="Standard Viennese Waltz">Standard Viennese Waltz:</label>
     <br>
-    <input type="number" id="Smooth Waltz" name="Smooth Waltz" min=0 max={{ len_playlists.get('Smooth Waltz') }} value=0>
+    <input type="number" id="Smooth Waltz" name="Smooth Waltz" min=0 max={{ ballroom_shuffle.smooth_waltz | length }} value=0>
     <label for="Smooth Waltz">Smooth Waltz:</label>
     <br>
-    <input type="number" id="Smooth Tango" name="Smooth Tango" min=0 max={{ len_playlists.get('Smooth Tango') }} value=0>
+    <input type="number" id="Smooth Tango" name="Smooth Tango" min=0 max={{ ballroom_shuffle.smooth_tango | length }} value=0>
     <label for="Smooth Tango">Smooth Tango:</label>
     <br>
-    <input type="number" id="Smooth Foxtrot" name="Smooth Foxtrot" min=0 max={{ len_playlists.get('Smooth Foxtrot') }} value=0>
+    <input type="number" id="Smooth Foxtrot" name="Smooth Foxtrot" min=0 max={{ ballroom_shuffle.smooth_foxtrot | length }} value=0>
     <label for="Smooth Foxtrot">Smooth Foxtrot:</label>
     <br>
-    <input type="number" id="Smooth Viennese Waltz" name="Smooth Viennese Waltz" min=0 max={{ len_playlists.get('Smooth Viennese Waltz') }} value=0>
+    <input type="number" id="Smooth Viennese Waltz" name="Smooth Viennese Waltz" min=0 max={{ ballroom_shuffle.smooth_v_waltz | length }} value=0>
     <label for="Smooth Viennese Waltz">Smooth Viennese Waltz:</label>
     <br>
-    <input type="number" id="Latin Cha Cha" name="Latin Cha Cha" min=0 max={{ len_playlists.get('Latin Cha Cha') }} value=0>
+    <input type="number" id="Latin Cha Cha" name="Latin Cha Cha" min=0 max={{ ballroom_shuffle.latin_cha_cha | length }} value=0>
     <label for="Latin Cha Cha">Latin Cha Cha:</label>
     <br>
-    <input type="number" id="Latin Rumba" name="Latin Rumba" min=0 max={{ len_playlists.get('Latin Rumba') }} value=0>
+    <input type="number" id="Latin Rumba" name="Latin Rumba" min=0 max={{ ballroom_shuffle.latin_rumba | length }} value=0>
     <label for="Latin Rumba">Latin Rumba:</label>
     <br>
-    <input type="number" id="Latin Samba" name="Latin Samba" min=0 max={{ len_playlists.get('Latin Samba') }} value=0>
+    <input type="number" id="Latin Samba" name="Latin Samba" min=0 max={{ ballroom_shuffle.latin_samba | length }} value=0>
     <label for="Latin Samba">Latin Samba:</label>
     <br>
-    <input type="number" id="Latin Jive" name="Latin Jive" min=0 max={{ len_playlists.get('Latin Jive') }} value=0>
+    <input type="number" id="Latin Jive" name="Latin Jive" min=0 max={{ ballroom_shuffle.latin_jive | length }} value=0>
     <label for="Latin Jive"></label>Latin Jive:</label>
     <br>
-    <input type="number" id="Rhythm Cha Cha" name="Rhythm Cha Cha" min=0 max={{ len_playlists.get('Rhythm Cha Cha') }} value=0>
+    <input type="number" id="Rhythm Cha Cha" name="Rhythm Cha Cha" min=0 max={{ ballroom_shuffle.rhythm_cha_cha | length }} value=0>
     <label for="Rhythm Cha Cha"></label>Rhythm Cha Cha:</label>
     <br>
-    <input type="number" id="Rhythm Rumba" name="Rhythm Rumba" min=0 max={{ len_playlists.get('Rhythm Rumba') }} value=0>
+    <input type="number" id="Rhythm Rumba" name="Rhythm Rumba" min=0 max={{ ballroom_shuffle.rhythm_rumba | length }} value=0>
     <label for="Rhythm Rumba"></label>Rhythm Rumba:</label>
     <br>
-    <input type="number" id="Rhythm Swing" name="Rhythm Swing" min=0 max={{ len_playlists.get('Rhythm Swing') }} value=0>
+    <input type="number" id="Rhythm Swing" name="Rhythm Swing" min=0 max={{ ballroom_shuffle.rhythm_swing | length }} value=0>
     <label for="Rhythm Swing"></label>Rhythm Swing:</label>
     <br>
-    <input type="number" id="Rhythm Mambo" name="Rhythm Mambo" min=0 max={{ len_playlists.get('Rhythm Mambo') }} value=0>
+    <input type="number" id="Rhythm Mambo" name="Rhythm Mambo" min=0 max={{ ballroom_shuffle.rhythm_mambo | length }} value=0>
     <label for="Rhythm Mambo"></label>Rhythm Mambo:</label>
     <br>
-    <input type="number" id="Nightclub Salsa" name="Nightclub Salsa" min=0 max={{ len_playlists.get('Nightclub Salsa') }} value=0>
+    <input type="number" id="Nightclub Salsa" name="Nightclub Salsa" min=0 max={{ ballroom_shuffle.nightclub_salsa | length }} value=0>
     <label for="Nightclub Salsa"></label>Nightclub Salsa:</label>
     <br>
-    <input type="number" id="Nightclub Bachata" name="Nightclub Bachata" min=0 max={{ len_playlists.get('Nightclub Bachata') }} value=0>
+    <input type="number" id="Nightclub Bachata" name="Nightclub Bachata" min=0 max={{ ballroom_shuffle.nightclub_bachata | length }} value=0>
     <label for="Nightclub Bachata"></label>Nightclub Bachata:</label>
     <br>
-    <input type="number" id="Nightclub Merengue" name="Nightclub Merengue" min=0 max={{ len_playlists.get('Nightclub Merengue') }} value=0>
+    <input type="number" id="Nightclub Merengue" name="Nightclub Merengue" min=0 max={{ ballroom_shuffle.nightclub_merengue | length }} value=0>
     <label for="Nightclub Merengue"></label>Nightclub Merengue:</label>
+    <br>
+    <label for="Playlist Name"></label>Playlist Name:</label>
+    <input type="text" id="Playlist Name" name="Playlist Name" required value="Temporary Playlist {{ temporary_num }}"
+        onblur="if (this.value == '') {this.value = 'Temporary Playlist {{ temporary_num }}';}"
+        onfocus="if (this.value == 'Temporary Playlist {{ temporary_num }}') {this.value = '';}"/>
     <br>
     <button type="submit">Create Custom Playlist</button>
 </form>

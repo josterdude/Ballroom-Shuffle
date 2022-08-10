@@ -54,6 +54,8 @@ class Ballroom_Shuffle():
         #print(f"Latin playlists:\n{self.latin_playlist_ids}\n-----------------")
         #print(f"Rhythm playlists:\n{self.rhythm_playlist_ids}\n-----------------")
         #print(f"Nightclub playlists:\n{self.nightclub_playlist_ids}\n-----------------")
+
+    def load_ballroom_playlists(self):
         print("Loading music from source playlists...")
         self.standard_waltz = self.get_style_dance_tracks('Standard', 'Waltz')
         print("Progress: 5%")
@@ -221,14 +223,7 @@ class Ballroom_Shuffle():
         # Ensure provided playlist name does not already exist
         all_playlist_names = self.all_playlists.keys()
         if playlist_name in all_playlist_names:
-            print(f"The provided playlist name ({playlist_name}) is already taken. Please provide a new playlist name.")
-            return
-
-        # Create a playlist called "test"
-        self.sp.user_playlist_create(self.user_id, playlist_name)
-
-        # Ensure newly created playlist is included in dictionary containing all playlists
-        self.update_all_playlists()
+            return 1, f"The provided playlist name ({playlist_name}) is already taken. Please provide a new playlist name.", None
 
         # Populate new playlist with songs
         songs_to_add_to_playlist = []
@@ -239,7 +234,7 @@ class Ballroom_Shuffle():
                 random_standard_waltz = np.random.choice(self.standard_waltz, size = preferences.get('Standard Waltz'), replace = False)
                 songs_to_add_to_playlist = np.concatenate((songs_to_add_to_playlist, [song['id'] for song in random_standard_waltz]))
             else:
-                print(f"The number of Standard Waltz songs chosen ({preferences.get('Standard Waltz')} exceeds the maximum number of Standard Waltz songs available. Please enter a value less than or equal to {max_num_standard_waltz_songs}.")
+                return 2, f"The number of Standard Waltz songs chosen ({preferences.get('Standard Waltz')} exceeds the maximum number of Standard Waltz songs available. Please enter a value less than or equal to {max_num_standard_waltz_songs}.", None
 
         if preferences.get('Standard Tango') > 0:
             max_num_standard_tango_songs = len(self.standard_tango)
@@ -247,7 +242,7 @@ class Ballroom_Shuffle():
                 random_standard_tango = np.random.choice(self.standard_tango, size = preferences.get('Standard Tango'), replace = False)
                 songs_to_add_to_playlist = np.concatenate((songs_to_add_to_playlist, [song['id'] for song in random_standard_tango]))
             else:
-                print(f"The number of Standard Tango songs chosen ({preferences.get('Standard Tango')} exceeds the maximum number of Standard Tango songs available. Please enter a value less than or equal to {max_num_standard_tango_songs}.")
+                return 3, f"The number of Standard Tango songs chosen ({preferences.get('Standard Tango')} exceeds the maximum number of Standard Tango songs available. Please enter a value less than or equal to {max_num_standard_tango_songs}.", None
 
         if preferences.get('Standard Foxtrot') > 0:
             max_num_standard_foxtrot_songs = len(self.standard_foxtrot)
@@ -255,7 +250,7 @@ class Ballroom_Shuffle():
                 random_standard_foxtrot = np.random.choice(self.standard_foxtrot, size = preferences.get('Standard Foxtrot'), replace = False)
                 songs_to_add_to_playlist = np.concatenate((songs_to_add_to_playlist, [song['id'] for song in random_standard_foxtrot]))
             else:
-                print(f"The number of Standard Foxtrot songs chosen ({preferences.get('Standard Foxtrot')} exceeds the maximum number of Standard Foxtrot songs available. Please enter a value less than or equal to {max_num_standard_foxtrot_songs}.")
+                return 4, f"The number of Standard Foxtrot songs chosen ({preferences.get('Standard Foxtrot')} exceeds the maximum number of Standard Foxtrot songs available. Please enter a value less than or equal to {max_num_standard_foxtrot_songs}.", None
 
         if preferences.get('Standard Quickstep') > 0:
             max_num_standard_quickstep_songs = len(self.standard_quickstep)
@@ -263,7 +258,7 @@ class Ballroom_Shuffle():
                 random_standard_quickstep = np.random.choice(self.standard_quickstep, size = preferences.get('Standard Quickstep'), replace = False)
                 songs_to_add_to_playlist = np.concatenate((songs_to_add_to_playlist, [song['id'] for song in random_standard_quickstep]))
             else:
-                print(f"The number of Standard Quickstep songs chosen ({preferences.get('Standard Quickstep')} exceeds the maximum number of Standard Quickstep songs available. Please enter a value less than or equal to {max_num_standard_quickstep_songs}.")
+                return 5, f"The number of Standard Quickstep songs chosen ({preferences.get('Standard Quickstep')} exceeds the maximum number of Standard Quickstep songs available. Please enter a value less than or equal to {max_num_standard_quickstep_songs}.", None
 
         if preferences.get('Standard Viennese Waltz') > 0:
             max_num_standard_v_waltz_songs = len(self.standard_v_waltz)
@@ -271,7 +266,7 @@ class Ballroom_Shuffle():
                 random_standard_v_waltz = np.random.choice(self.standard_v_waltz, size = preferences.get('Standard Viennese Waltz'), replace = False)
                 songs_to_add_to_playlist = np.concatenate((songs_to_add_to_playlist, [song['id'] for song in random_standard_v_waltz]))
             else:
-                print(f"The number of Standard Viennese Waltz songs chosen ({preferences.get('Standard Viennese Waltz')} exceeds the maximum number of Standard Viennese Waltz songs available. Please enter a value less than or equal to {max_num_standard_v_waltz_songs}.")
+                return 6, f"The number of Standard Viennese Waltz songs chosen ({preferences.get('Standard Viennese Waltz')} exceeds the maximum number of Standard Viennese Waltz songs available. Please enter a value less than or equal to {max_num_standard_v_waltz_songs}.", None
 
         if preferences.get('Smooth Waltz') > 0:
             max_num_smooth_waltz_songs = len(self.smooth_waltz)
@@ -279,7 +274,7 @@ class Ballroom_Shuffle():
                 random_smooth_waltz = np.random.choice(self.smooth_waltz, size = preferences.get('Smooth Waltz'), replace = False)
                 songs_to_add_to_playlist = np.concatenate((songs_to_add_to_playlist, [song['id'] for song in random_smooth_waltz]))
             else:
-                print(f"The number of Smooth Waltz songs chosen ({preferences.get('Standard Waltz')} exceeds the maximum number of Smooth Waltz songs available. Please enter a value less than or equal to {max_num_smooth_waltz_songs}.")
+                return 7, f"The number of Smooth Waltz songs chosen ({preferences.get('Standard Waltz')} exceeds the maximum number of Smooth Waltz songs available. Please enter a value less than or equal to {max_num_smooth_waltz_songs}.", None
 
         if preferences.get('Smooth Tango') > 0:
             max_num_smooth_tango_songs = len(self.smooth_tango)
@@ -287,7 +282,7 @@ class Ballroom_Shuffle():
                 random_smooth_tango = np.random.choice(self.smooth_tango, size = preferences.get('Smooth Tango'), replace = False)
                 songs_to_add_to_playlist = np.concatenate((songs_to_add_to_playlist, [song['id'] for song in random_smooth_tango]))
             else:
-                print(f"The number of Smooth Tango songs chosen ({preferences.get('Smooth Tango')} exceeds the maximum number of Smooth Tango songs available. Please enter a value less than or equal to {max_num_smooth_tango_songs}.")
+                return 8, f"The number of Smooth Tango songs chosen ({preferences.get('Smooth Tango')} exceeds the maximum number of Smooth Tango songs available. Please enter a value less than or equal to {max_num_smooth_tango_songs}.", None
 
         if preferences.get('Smooth Foxtrot') > 0:
             max_num_smooth_foxtrot_songs = len(self.smooth_foxtrot)
@@ -295,7 +290,7 @@ class Ballroom_Shuffle():
                 random_smooth_foxtrot = np.random.choice(self.smooth_foxtrot, size = preferences.get('Smooth Foxtrot'), replace = False)
                 songs_to_add_to_playlist = np.concatenate((songs_to_add_to_playlist, [song['id'] for song in random_smooth_foxtrot]))
             else:
-                print(f"The number of Smooth Foxtrot songs chosen ({preferences.get('Smooth Foxtrot')} exceeds the maximum number of Smooth Foxtrot songs available. Please enter a value less than or equal to {max_num_smooth_foxtrot_songs}.")
+                return 9, f"The number of Smooth Foxtrot songs chosen ({preferences.get('Smooth Foxtrot')} exceeds the maximum number of Smooth Foxtrot songs available. Please enter a value less than or equal to {max_num_smooth_foxtrot_songs}.", None
 
         if preferences.get('Smooth Viennese Waltz') > 0:
             max_num_smooth_v_waltz_songs = len(self.smooth_v_waltz)
@@ -303,7 +298,7 @@ class Ballroom_Shuffle():
                 random_smooth_v_waltz = np.random.choice(self.smooth_v_waltz, size = preferences.get('Smooth Viennese Waltz'), replace = False)
                 songs_to_add_to_playlist = np.concatenate((songs_to_add_to_playlist, [song['id'] for song in random_smooth_v_waltz]))
             else:
-                print(f"The number of Smooth Viennese Waltz songs chosen ({preferences.get('Smooth Viennese Waltz')} exceeds the maximum number of Smooth Viennese Waltz songs available. Please enter a value less than or equal to {max_num_smooth_v_waltz_songs}.")
+                return 10, f"The number of Smooth Viennese Waltz songs chosen ({preferences.get('Smooth Viennese Waltz')} exceeds the maximum number of Smooth Viennese Waltz songs available. Please enter a value less than or equal to {max_num_smooth_v_waltz_songs}.", None
 
         if preferences.get('Latin Cha Cha') > 0:
             max_num_latin_cha_cha_songs = len(self.latin_cha_cha)
@@ -311,7 +306,7 @@ class Ballroom_Shuffle():
                 random_latin_cha_cha = np.random.choice(self.latin_cha_cha, size = preferences.get('Latin Cha Cha'), replace = False)
                 songs_to_add_to_playlist = np.concatenate((songs_to_add_to_playlist, [song['id'] for song in random_latin_cha_cha]))
             else:
-                print(f"The number of Latin Cha Cha songs chosen ({preferences.get('Latin Cha Cha')} exceeds the maximum number of Latin Cha Cha songs available. Please enter a value less than or equal to {max_num_latin_cha_cha_songs}.")
+                return 11, f"The number of Latin Cha Cha songs chosen ({preferences.get('Latin Cha Cha')} exceeds the maximum number of Latin Cha Cha songs available. Please enter a value less than or equal to {max_num_latin_cha_cha_songs}.", None
 
         if preferences.get('Latin Rumba') > 0:
             max_num_latin_rumba_songs = len(self.latin_rumba)
@@ -319,7 +314,7 @@ class Ballroom_Shuffle():
                 random_latin_rumba = np.random.choice(self.latin_rumba, size = preferences.get('Latin Rumba'), replace = False)
                 songs_to_add_to_playlist = np.concatenate((songs_to_add_to_playlist, [song['id'] for song in random_latin_rumba]))
             else:
-                print(f"The number of Latin Rumba songs chosen ({preferences.get('Latin Rumba')} exceeds the maximum number of Latin Rumba songs available. Please enter a value less than or equal to {max_num_latin_rumba_songs}.")
+                return 12, f"The number of Latin Rumba songs chosen ({preferences.get('Latin Rumba')} exceeds the maximum number of Latin Rumba songs available. Please enter a value less than or equal to {max_num_latin_rumba_songs}.", None
 
         if preferences.get('Latin Samba') > 0:
             max_num_latin_samba_songs = len(self.latin_samba)
@@ -327,7 +322,7 @@ class Ballroom_Shuffle():
                 random_latin_samba = np.random.choice(self.latin_samba, size = preferences.get('Latin Samba'), replace = False)
                 songs_to_add_to_playlist = np.concatenate((songs_to_add_to_playlist, [song['id'] for song in random_latin_samba]))
             else:
-                print(f"The number of Latin Samba songs chosen ({preferences.get('Latin Samba')} exceeds the maximum number of Latin Samba songs available. Please enter a value less than or equal to {max_num_latin_samba_songs}.")
+                return 13, f"The number of Latin Samba songs chosen ({preferences.get('Latin Samba')} exceeds the maximum number of Latin Samba songs available. Please enter a value less than or equal to {max_num_latin_samba_songs}.", None
 
         if preferences.get('Latin Jive') > 0:
             max_num_latin_jive_songs = len(self.latin_jive)
@@ -335,14 +330,15 @@ class Ballroom_Shuffle():
                 random_latin_jive = np.random.choice(self.latin_jive, size = preferences.get('Latin Jive'), replace = False)
                 songs_to_add_to_playlist = np.concatenate((songs_to_add_to_playlist, [song['id'] for song in random_latin_jive]))
             else:
-                print(f"The number of Latin Jive songs chosen ({preferences.get('Latin Jive')} exceeds the maximum number of Latin Jive songs available. Please enter a value less than or equal to {max_num_latin_jive_songs}.")
+                return 14, f"The number of Latin Jive songs chosen ({preferences.get('Latin Jive')} exceeds the maximum number of Latin Jive songs available. Please enter a value less than or equal to {max_num_latin_jive_songs}.", None
 
         if preferences.get('Rhythm Cha Cha') > 0:
             max_num_rhythm_cha_cha_songs = len(self.rhythm_cha_cha)
             if preferences.get('Rhythm Cha Cha') <= max_num_rhythm_cha_cha_songs:
                 random_rhythm_cha_cha = np.random.choice(self.rhythm_cha_cha, size = preferences.get('Rhythm Cha Cha'), replace = False)
                 songs_to_add_to_playlist = np.concatenate((songs_to_add_to_playlist, [song['id'] for song in random_rhythm_cha_cha]))
-            else: print(f"The number of Rhythm Cha Cha songs chosen ({preferences.get('Rhythm Cha Cha')} exceeds the maximum number of Rhythm Cha Cha songs available. Please enter a value less than or equal to {max_num_rhythm_cha_cha_songs}.")
+            else:
+                return 15, f"The number of Rhythm Cha Cha songs chosen ({preferences.get('Rhythm Cha Cha')} exceeds the maximum number of Rhythm Cha Cha songs available. Please enter a value less than or equal to {max_num_rhythm_cha_cha_songs}.", None
 
         if preferences.get('Rhythm Rumba') > 0:
             max_num_rhythm_rumba_songs = len(self.rhythm_rumba)
@@ -350,7 +346,7 @@ class Ballroom_Shuffle():
                 random_rhythm_rumba = np.random.choice(self.rhythm_rumba, size = preferences.get('Rhythm Rumba'), replace = False)
                 songs_to_add_to_playlist = np.concatenate((songs_to_add_to_playlist, [song['id'] for song in random_rhythm_rumba]))
             else:
-                print(f"The number of Rhythm Rumba songs chosen ({preferences.get('Rhythm Rumba')} exceeds the maximum number of Rhythm Rumba songs available. Please enter a value less than or equal to {max_num_rhythm_rumba_songs}.")
+                return 16, f"The number of Rhythm Rumba songs chosen ({preferences.get('Rhythm Rumba')} exceeds the maximum number of Rhythm Rumba songs available. Please enter a value less than or equal to {max_num_rhythm_rumba_songs}.", None
 
         if preferences.get('Rhythm Swing') > 0:
             max_num_rhythm_swing_songs = len(self.rhythm_swing)
@@ -358,7 +354,7 @@ class Ballroom_Shuffle():
                 random_rhythm_swing = np.random.choice(self.rhythm_swing, size = preferences.get('Rhythm Swing'), replace = False)
                 songs_to_add_to_playlist = np.concatenate((songs_to_add_to_playlist, [song['id'] for song in random_rhythm_swing]))
             else:
-                print(f"The number of Rhythm Swing songs chosen ({preferences.get('Rhythm Swing')} exceeds the maximum number of Rhythm Swing songs available. Please enter a value less than or equal to {max_num_rhythm_swing_songs}.")
+                return 17, f"The number of Rhythm Swing songs chosen ({preferences.get('Rhythm Swing')} exceeds the maximum number of Rhythm Swing songs available. Please enter a value less than or equal to {max_num_rhythm_swing_songs}.", None
 
         if preferences.get('Rhythm Mambo') > 0:
             max_num_rhythm_mambo_songs = len(self.rhythm_mambo)
@@ -366,7 +362,7 @@ class Ballroom_Shuffle():
                 random_rhythm_mambo = np.random.choice(self.rhythm_mambo, size = preferences.get('Rhythm Mambo'), replace = False)
                 songs_to_add_to_playlist = np.concatenate((songs_to_add_to_playlist, [song['id'] for song in random_rhythm_mambo]))
             else:
-                print(f"The number of Rhythm Mambo songs chosen ({preferences.get('Rhythm Mambo')} exceeds the maximum number of Rhythm Mambo songs available. Please enter a value less than or equal to {max_num_rhythm_mambo_songs}.")
+                return 18, f"The number of Rhythm Mambo songs chosen ({preferences.get('Rhythm Mambo')} exceeds the maximum number of Rhythm Mambo songs available. Please enter a value less than or equal to {max_num_rhythm_mambo_songs}.", None
 
         if preferences.get('Nightclub Salsa') > 0:
             max_num_nightclub_salsa_songs = len(self.nightclub_salsa)
@@ -374,7 +370,7 @@ class Ballroom_Shuffle():
                 random_nightclub_salsa = np.random.choice(self.nightclub_salsa, size = preferences.get('Nightclub Salsa'), replace = False)
                 songs_to_add_to_playlist = np.concatenate((songs_to_add_to_playlist, [song['id'] for song in random_nightclub_salsa]))
             else:
-                print(f"The number of Nightclub Salsa songs chosen ({preferences.get('Nightclub Salsa')} exceeds the maximum number of Nightclub Salsa songs available. Please enter a value less than or equal to {max_num_nightclub_salsa_songs}.")
+                return 19, f"The number of Nightclub Salsa songs chosen ({preferences.get('Nightclub Salsa')} exceeds the maximum number of Nightclub Salsa songs available. Please enter a value less than or equal to {max_num_nightclub_salsa_songs}.", None
 
         if preferences.get('Nightclub Bachata') > 0:
             max_num_nightclub_bachata_songs = len(self.nightclub_bachata)
@@ -382,7 +378,7 @@ class Ballroom_Shuffle():
                 random_nightclub_bachata = np.random.choice(self.nightclub_bachata, size = preferences.get('Nightclub Bachata'), replace = False)
                 songs_to_add_to_playlist = np.concatenate((songs_to_add_to_playlist, [song['id'] for song in random_nightclub_bachata]))
             else:
-                print(f"The number of Nightclub Bachata songs chosen ({preferences.get('Nightclub Bachata')} exceeds the maximum number of Nightclub Bachata songs available. Please enter a value less than or equal to {max_num_nightclub_bachata_songs}.")
+                return 20, f"The number of Nightclub Bachata songs chosen ({preferences.get('Nightclub Bachata')} exceeds the maximum number of Nightclub Bachata songs available. Please enter a value less than or equal to {max_num_nightclub_bachata_songs}.", None
 
         if preferences.get('Nightclub Merengue') > 0:
             max_num_nightclub_merengue_songs = len(self.nightclub_merengue)
@@ -390,16 +386,23 @@ class Ballroom_Shuffle():
                 random_nightclub_merengue = np.random.choice(self.nightclub_merengue, size = preferences.get('Nightclub Merengue'), replace = False)
                 songs_to_add_to_playlist = np.concatenate((songs_to_add_to_playlist, [song['id'] for song in random_nightclub_merengue]))
             else:
-                print(f"The number of Nightclub Merengue songs chosen ({preferences.get('Nightclub Merengue')} exceeds the maximum number of Nightclub Merengue songs available. Please enter a value less than or equal to {max_num_nightclub_merengue_songs}.")
+                return 21, f"The number of Nightclub Merengue songs chosen ({preferences.get('Nightclub Merengue')} exceeds the maximum number of Nightclub Merengue songs available. Please enter a value less than or equal to {max_num_nightclub_merengue_songs}.", None
 
         if shuffle:
             songs_to_add_to_playlist = np.random.shuffle(songs_to_add_to_playlist)
 
         if len(songs_to_add_to_playlist) == 0:
-            print("ERROR: Must choose at least one song to create a playlist.")
-            return
+            return 22, "Must choose at least one song to create a playlist.", None
 
-        ballroom_shuffle.sp.playlist_add_items(ballroom_shuffle.all_playlists[playlist_name]['id'], songs_to_add_to_playlist)
+        # Create a playlist with provided playlist name
+        self.sp.user_playlist_create(self.user_id, playlist_name)
+
+        # Ensure newly created playlist is included in dictionary containing all playlists
+        self.update_all_playlists()
+
+        self.sp.playlist_add_items(self.all_playlists[playlist_name]['id'], songs_to_add_to_playlist)
+
+        return 0, f"Created custom playlist: {playlist_name}", self.all_playlists[playlist_name]['id']
 
     # TODO: "Save the playlist" by renaming with the function user_playlist_change_details(user, playlist_id, name=None, public=True)
 
@@ -422,6 +425,26 @@ class Ballroom_Shuffle():
             if 'Temporary' in playlist_name:
                 print(f"Removing playlist: {playlist_name}")
                 ballroom_shuffle.sp.current_user_unfollow_playlist(playlist_details['id'])
+
+    '''
+    def custom_playback(self):
+        self.scope = "user-modify-playback-state"
+        # TODO: Remember to change the scope back to "playlist-modify-public"
+        #ballroom_shuffle.update_all_playlists()
+        custom_playlists = {}
+        for i, (playlist_name, playlist_details) in enumerate(self.all_playlists.items()):
+            if not 'Ballroom Shuffle' in playlist_name:
+               print(f"{i}: {playlist_name}");
+               custom_playlists[i] = playlist_name
+
+        choice = int(input("Which playlist would you like to play? "))
+        choice = custom_playlists[choice]
+        chosen_playlist = self.all_playlists.get(choice)
+        chosen_playlist_tracks = self.get_playlist_tracks(chosen_playlist.get('name'))
+        for track in chosen_playlist_tracks:
+            print(track['name'])
+        self.sp.start_playback(context_uri=chosen_playlist.get('uri'))
+    '''
 
 if __name__ == '__main__':
     ballroom_shuffle = Ballroom_Shuffle()
@@ -454,10 +477,12 @@ if __name__ == '__main__':
     print("1: Create new playlist")
     print("2: Delete existing playlist")
     print("3: Delete all temporary playlists")
+    print("4: Custom playback")
     action = input("What would you like to do? ")
     print('===========================')
 
     if action == '1':
+        ballroom_shuffle.load_ballroom_playlists()
         print("1: Rounds (Standard, Smooth, Latin, Rhythm)")
         print("2: Standard/Smooth (Standard and Smooth only)")
         print("3: Latin/Rhythm (Latin and Rhythm only)")
@@ -525,12 +550,13 @@ if __name__ == '__main__':
                             'Rhythm Cha Cha': num_rhythm_cha_cha, 'Rhythm Rumba': num_rhythm_rumba, 'Rhythm Swing': num_rhythm_swing, 'Rhythm Mambo': num_rhythm_mambo,
                             'Nightclub Salsa': num_nightclub_salsa, 'Nightclub Bachata': num_nightclub_bachata, 'Nightclub Merengue': num_nightclub_merengue}
 
-            print(f"Creating custom playlist named {playlist_name} - Temporary")
             ballroom_shuffle.create_playlist(f"{playlist_name} - Temporary", custom_playlist)
     elif action == '2':
         pass
     elif action == '3':
         ballroom_shuffle.delete_temporary_playlists()
+    elif action == '4':
+        ballroom_shuffle.custom_playback()
 
     '''
     # TODO: This is for adding songs to an existing playlist or randomly selecting new songs after presenting the selection to user
