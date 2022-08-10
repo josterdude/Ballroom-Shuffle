@@ -16,7 +16,7 @@ class Ballroom_Shuffle():
         self.user_id = '31f2tij4ghid3hnzc4ufiaieh5ny'
         self.allow_duplicates = False
 
-        self.all_playlists_details = self.sp.current_user_playlists()
+        self.all_playlists_details = self.sp.user_playlists(self.user_id)
         self.all_playlists = {}
         for playlist in self.all_playlists_details['items']:
             playlist_name = playlist['name']
