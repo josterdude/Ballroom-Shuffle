@@ -8,8 +8,16 @@ ballroom_shuffle = Ballroom_Shuffle()
 ballroom_shuffle.load_ballroom_playlists()
 temporary_num = 1
 
-@app.route("/")
+@app.route("/", methods=['GET', 'POST'])
 def main():
+    if request.form.get('playlist_type') == 'rounds':
+        print('Rounds')
+    elif request.form.get('playlist_type') == 'standard/smooth':
+        print('Standard/Smooth')
+    elif request.form.get('playlist_type') == 'latin/rhythm':
+        print('Latin/Rhythm')
+    elif request.form.get('playlist_type') == 'custom':
+        print('Custom')
     return render_template('/main.html')
 
 @app.route('/custom', methods=['GET', 'POST'])
