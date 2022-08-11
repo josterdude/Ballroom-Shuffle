@@ -49,10 +49,10 @@ def main():
             if request.form.get('Playlist Name') == '':
                 playlist_name = "Temporary Custom Playlist - "
             else:
-            return redirect(url_for('custom', playlist_name = playlist_name + datetime.now().strftime("%d/%m/%y %H:%M:%S")))
                 playlist_name = request.form.get('Playlist Name') + " - "
+            return redirect(url_for('custom', playlist_name = playlist_name + datetime.now().strftime("%m/%d/%y %H:%M:%S")))
 
-        return_code, return_msg, playlist_id = ballroom_shuffle.create_playlist(playlist_name + datetime.now().strftime("%d/%m/%y %H:%M:%S"), preferences)
+        return_code, return_msg, playlist_id = ballroom_shuffle.create_playlist(playlist_name + datetime.now().strftime("%m/%d/%y %H:%M:%S"), preferences)
 
         if return_code > 0:
             return render_template('/create_playlist_error.html', return_msg = return_msg)
