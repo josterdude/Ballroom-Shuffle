@@ -54,13 +54,13 @@ def custom():
         return_code, return_msg, playlist_id = ballroom_shuffle.create_playlist(request.form.get("Playlist Name"), preferences)
 
         if return_code > 0:
-            return render_template('/custom_error.html', return_msg = return_msg)
+            return render_template('/create_playlist_error.html', return_msg = return_msg)
         elif return_code == 0:
-            return render_template('/playlist.html', playlist_id = playlist_id)
+            return render_template('/display_playlist.html', playlist_id = playlist_id)
 
     elif request.method == "GET":
-        return render_template('/custom.html', ballroom_shuffle = ballroom_shuffle, preferences = preferences, temporary_num = temporary_num)
+        return render_template('/create_playlist.html', ballroom_shuffle = ballroom_shuffle, preferences = preferences, temporary_num = temporary_num)
 
 @app.route('/playlist')
 def playlist():
-    return render_template('/playlist.html')
+    return render_template('/display_playlist.html')
