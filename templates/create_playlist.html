@@ -62,11 +62,6 @@
     <input type="number" id="Nightclub Merengue" name="Nightclub Merengue" min=0 max={{ ballroom_shuffle.nightclub_merengue | length }} value=0>
     <label for="Nightclub Merengue"></label>Nightclub Merengue:</label>
     <br>
-    <label for="Playlist Name"></label>Playlist Name:</label>
-    <input type="text" id="Playlist Name" name="Playlist Name" required value="Temporary Playlist {{ temporary_num }}"
-        onblur="if (this.value == '') {this.value = 'Temporary Playlist {{ temporary_num }}';}"
-        onfocus="if (this.value == 'Temporary Playlist {{ temporary_num }}') {this.value = '';}"/>
-    <br>
     <button type="submit">Create Custom Playlist</button>
     <button type="reset" value="Reset">Reset</button>
 </form>

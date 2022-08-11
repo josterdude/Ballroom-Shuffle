@@ -2,6 +2,7 @@ from cgitb import html
 from flask import Flask
 from flask import Flask, session, url_for, redirect, render_template, request, abort, flash
 from main import Ballroom_Shuffle
+from datetime import datetime
 
 app = Flask(__name__)
 ballroom_shuffle = Ballroom_Shuffle()
@@ -17,6 +18,10 @@ def main():
                         'Latin Cha Cha': 1, 'Latin Rumba': 1, 'Latin Samba': 1, 'Latin Jive': 1,
                         'Rhythm Cha Cha': 1, 'Rhythm Rumba': 1, 'Rhythm Swing': 1, 'Rhythm Mambo': 1,
                         'Nightclub Salsa': 0, 'Nightclub Bachata': 0, 'Nightclub Merengue': 0}
+            if request.form.get('Playlist Name') == '':
+                playlist_name = "Temporary Rounds "
+            else:
+                playlist_name = request.form.get('Playlist Name')
 
         elif request.form.get('playlist_type') == 'standard/smooth':
             preferences = {'Standard Waltz': 1, 'Standard Tango': 1, 'Standard Foxtrot': 1, 'Standard Quickstep': 1, 'Standard Viennese Waltz': 1,
@@ -24,6 +29,10 @@ def main():
                         'Latin Cha Cha': 0, 'Latin Rumba': 0, 'Latin Samba': 0, 'Latin Jive': 0,
                         'Rhythm Cha Cha': 0, 'Rhythm Rumba': 0, 'Rhythm Swing': 0, 'Rhythm Mambo': 0,
                         'Nightclub Salsa': 0, 'Nightclub Bachata': 0, 'Nightclub Merengue': 0}
+            if request.form.get('Playlist Name') == '':
+                playlist_name = "Temporary Standard/Smooth "
+            else:
+                playlist_name = request.form.get('Playlist Name')
 
         elif request.form.get('playlist_type') == 'latin/rhythm':
             preferences = {'Standard Waltz': 0, 'Standard Tango': 0, 'Standard Foxtrot': 0, 'Standard Quickstep': 0, 'Standard Viennese Waltz': 0,
@@ -31,18 +40,26 @@ def main():
                         'Latin Cha Cha': 1, 'Latin Rumba': 1, 'Latin Samba': 1, 'Latin Jive': 1,
                         'Rhythm Cha Cha': 1, 'Rhythm Rumba': 1, 'Rhythm Swing': 1, 'Rhythm Mambo': 1,
                         'Nightclub Salsa': 0, 'Nightclub Bachata': 0, 'Nightclub Merengue': 0}
+            if request.form.get('Playlist Name') == '':
+                playlist_name = "Temporary Latin/Rhythm "
+            else:
+                playlist_name = request.form.get('Playlist Name') + " "
 
         elif request.form.get('playlist_type') == 'custom':
-            return redirect(url_for('custom'))
+            if request.form.get('Playlist Name') == '':
+                playlist_name = "Temporary Custom Playlist "
+            else:
+                playlist_name = request.form.get('Playlist Name') + " "
+            return redirect(url_for('custom', playlist_name = playlist_name + datetime.now().strftime("%d/%m/%y %H:%M:%S")))
 
-        return_code, return_msg, playlist_id = ballroom_shuffle.create_playlist(request.form.get("Playlist Name"), preferences)
+        return_code, return_msg, playlist_id = ballroom_shuffle.create_playlist(playlist_name + datetime.now().strftime("%d/%m/%y %H:%M:%S"), preferences)
 
         if return_code > 0:
             return render_template('/create_playlist_error.html', return_msg = return_msg)
         elif return_code == 0:
             return render_template('/display_playlist.html', playlist_id = playlist_id)
 
-    return render_template('/main.html', temporary_num = temporary_num)
+    return render_template('/main.html')
 
 @app.route('/custom', methods=['GET', 'POST'])
 def custom():
@@ -75,7 +92,7 @@ def custom():
                     'Nightclub Salsa': num_nightclub_salsa, 'Nightclub Bachata': num_nightclub_bachata, 'Nightclub Merengue': num_nightclub_merengue}
 
     if request.method == "POST":
-        return_code, return_msg, playlist_id = ballroom_shuffle.create_playlist(request.form.get("Playlist Name"), preferences)
+        return_code, return_msg, playlist_id = ballroom_shuffle.create_playlist(request.args.get("playlist_name"), preferences)
 
         if return_code > 0:
             return render_template('/create_playlist_error.html', return_msg = return_msg)
@@ -83,7 +100,7 @@ def custom():
             return render_template('/display_playlist.html', playlist_id = playlist_id)
 
     elif request.method == "GET":
-        return render_template('/create_playlist.html', ballroom_shuffle = ballroom_shuffle, preferences = preferences, temporary_num = temporary_num)
+        return render_template('/create_playlist.html', ballroom_shuffle = ballroom_shuffle, preferences = preferences)
 
 @app.route('/playlist')
 def playlist():
