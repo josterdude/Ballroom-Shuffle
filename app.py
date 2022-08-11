@@ -10,15 +10,39 @@ temporary_num = 1
 
 @app.route("/", methods=['GET', 'POST'])
 def main():
-    if request.form.get('playlist_type') == 'rounds':
-        print('Rounds')
-    elif request.form.get('playlist_type') == 'standard/smooth':
-        print('Standard/Smooth')
-    elif request.form.get('playlist_type') == 'latin/rhythm':
-        print('Latin/Rhythm')
-    elif request.form.get('playlist_type') == 'custom':
-        print('Custom')
-    return render_template('/main.html')
+    if request.form.get('playlist_type'):
+        if request.form.get('playlist_type') == 'rounds':
+            preferences = {'Standard Waltz': 1, 'Standard Tango': 1, 'Standard Foxtrot': 1, 'Standard Quickstep': 1, 'Standard Viennese Waltz': 1,
+                        'Smooth Waltz': 1, 'Smooth Tango': 1, 'Smooth Foxtrot': 1, 'Smooth Viennese Waltz': 1,
+                        'Latin Cha Cha': 1, 'Latin Rumba': 1, 'Latin Samba': 1, 'Latin Jive': 1,
+                        'Rhythm Cha Cha': 1, 'Rhythm Rumba': 1, 'Rhythm Swing': 1, 'Rhythm Mambo': 1,
+                        'Nightclub Salsa': 0, 'Nightclub Bachata': 0, 'Nightclub Merengue': 0}
+
+        elif request.form.get('playlist_type') == 'standard/smooth':
+            preferences = {'Standard Waltz': 1, 'Standard Tango': 1, 'Standard Foxtrot': 1, 'Standard Quickstep': 1, 'Standard Viennese Waltz': 1,
+                        'Smooth Waltz': 1, 'Smooth Tango': 1, 'Smooth Foxtrot': 1, 'Smooth Viennese Waltz': 1,
+                        'Latin Cha Cha': 0, 'Latin Rumba': 0, 'Latin Samba': 0, 'Latin Jive': 0,
+                        'Rhythm Cha Cha': 0, 'Rhythm Rumba': 0, 'Rhythm Swing': 0, 'Rhythm Mambo': 0,
+                        'Nightclub Salsa': 0, 'Nightclub Bachata': 0, 'Nightclub Merengue': 0}
+
+        elif request.form.get('playlist_type') == 'latin/rhythm':
+            preferences = {'Standard Waltz': 0, 'Standard Tango': 0, 'Standard Foxtrot': 0, 'Standard Quickstep': 0, 'Standard Viennese Waltz': 0,
+                        'Smooth Waltz': 0, 'Smooth Tango': 0, 'Smooth Foxtrot': 0, 'Smooth Viennese Waltz': 0,
+                        'Latin Cha Cha': 1, 'Latin Rumba': 1, 'Latin Samba': 1, 'Latin Jive': 1,
+                        'Rhythm Cha Cha': 1, 'Rhythm Rumba': 1, 'Rhythm Swing': 1, 'Rhythm Mambo': 1,
+                        'Nightclub Salsa': 0, 'Nightclub Bachata': 0, 'Nightclub Merengue': 0}
+
+        elif request.form.get('playlist_type') == 'custom':
+            return redirect(url_for('custom'))
+
+        return_code, return_msg, playlist_id = ballroom_shuffle.create_playlist(request.form.get("Playlist Name"), preferences)
+
+        if return_code > 0:
+            return render_template('/create_playlist_error.html', return_msg = return_msg)
+        elif return_code == 0:
+            return render_template('/display_playlist.html', playlist_id = playlist_id)
+
+    return render_template('/main.html', temporary_num = temporary_num)
 
 @app.route('/custom', methods=['GET', 'POST'])
 def custom():

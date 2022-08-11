@@ -3,6 +3,11 @@
 
 
 <form method="POST">
+    <label for="Playlist Name"></label>Playlist Name:</label>
+    <input type="text" id="Playlist Name" name="Playlist Name" required value="Temporary Playlist {{ temporary_num }}"
+        onblur="if (this.value == '') {this.value = 'Temporary Playlist {{ temporary_num }}';}"
+        onfocus="if (this.value == 'Temporary Playlist {{ temporary_num }}') {this.value = '';}"/>
+    <br>
     <button type="submit" name="playlist_type" value="rounds">Round Playlist</button>
     <button type="submit" name="playlist_type" value="standard/smooth">Standard/Smooth Playlist</button>
     <button type="submit" name="playlist_type" value="latin/rhythm">Latin/Rhythm Playlist</button>
