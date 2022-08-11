@@ -19,9 +19,9 @@ def main():
                         'Rhythm Cha Cha': 1, 'Rhythm Rumba': 1, 'Rhythm Swing': 1, 'Rhythm Mambo': 1,
                         'Nightclub Salsa': 0, 'Nightclub Bachata': 0, 'Nightclub Merengue': 0}
             if request.form.get('Playlist Name') == '':
-                playlist_name = "Temporary Rounds "
+                playlist_name = "Temporary Rounds - "
             else:
-                playlist_name = request.form.get('Playlist Name')
+                playlist_name = request.form.get('Playlist Name') + " - "
 
         elif request.form.get('playlist_type') == 'standard/smooth':
             preferences = {'Standard Waltz': 1, 'Standard Tango': 1, 'Standard Foxtrot': 1, 'Standard Quickstep': 1, 'Standard Viennese Waltz': 1,
@@ -30,9 +30,9 @@ def main():
                         'Rhythm Cha Cha': 0, 'Rhythm Rumba': 0, 'Rhythm Swing': 0, 'Rhythm Mambo': 0,
                         'Nightclub Salsa': 0, 'Nightclub Bachata': 0, 'Nightclub Merengue': 0}
             if request.form.get('Playlist Name') == '':
-                playlist_name = "Temporary Standard/Smooth "
+                playlist_name = "Temporary Standard/Smooth - "
             else:
-                playlist_name = request.form.get('Playlist Name')
+                playlist_name = request.form.get('Playlist Name') + " - "
 
         elif request.form.get('playlist_type') == 'latin/rhythm':
             preferences = {'Standard Waltz': 0, 'Standard Tango': 0, 'Standard Foxtrot': 0, 'Standard Quickstep': 0, 'Standard Viennese Waltz': 0,
@@ -41,16 +41,16 @@ def main():
                         'Rhythm Cha Cha': 1, 'Rhythm Rumba': 1, 'Rhythm Swing': 1, 'Rhythm Mambo': 1,
                         'Nightclub Salsa': 0, 'Nightclub Bachata': 0, 'Nightclub Merengue': 0}
             if request.form.get('Playlist Name') == '':
-                playlist_name = "Temporary Latin/Rhythm "
+                playlist_name = "Temporary Latin/Rhythm - "
             else:
-                playlist_name = request.form.get('Playlist Name') + " "
+                playlist_name = request.form.get('Playlist Name') + " - "
 
         elif request.form.get('playlist_type') == 'custom':
             if request.form.get('Playlist Name') == '':
-                playlist_name = "Temporary Custom Playlist "
+                playlist_name = "Temporary Custom Playlist - "
             else:
-                playlist_name = request.form.get('Playlist Name') + " "
             return redirect(url_for('custom', playlist_name = playlist_name + datetime.now().strftime("%d/%m/%y %H:%M:%S")))
+                playlist_name = request.form.get('Playlist Name') + " - "
 
         return_code, return_msg, playlist_id = ballroom_shuffle.create_playlist(playlist_name + datetime.now().strftime("%d/%m/%y %H:%M:%S"), preferences)
 
