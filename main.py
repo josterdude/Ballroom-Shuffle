@@ -406,6 +406,28 @@ class Ballroom_Shuffle():
 
     # TODO: "Save the playlist" by renaming with the function user_playlist_change_details(user, playlist_id, name=None, public=True)
 
+    def get_ballroom_playlists(self):
+        self.update_all_playlists()
+
+        ballroom_playlists = {}
+
+        for playlist_name, playlist_details in self.all_playlists.items():
+            if 'Ballroom Shuffle' in playlist_name:
+                ballroom_playlists[playlist_name] = playlist_details['id']
+        #  Return playlist_name, playlist_id (maybe playlist_tracks)
+        return ballroom_playlists.items()
+
+    def get_created_playlists(self):
+        self.update_all_playlists()
+
+        created_playlists = {}
+
+        for playlist_name, playlist_details in self.all_playlists.items():
+            if 'Ballroom Shuffle' not in playlist_name:
+                created_playlists[playlist_name] = playlist_details['id']
+        #  Return playlist_name, playlist_id (maybe playlist_tracks)
+        return created_playlists.items()
+
     def delete_playlist(self, playlist_name):
         # Ensure all playlist information is updated
         ballroom_shuffle.update_all_playlists()
@@ -477,7 +499,8 @@ if __name__ == '__main__':
     print("1: Create new playlist")
     print("2: Delete existing playlist")
     print("3: Delete all temporary playlists")
-    print("4: Custom playback")
+    print("4: Ballroom playback")
+    print("5: Custom playback")
     action = input("What would you like to do? ")
     print('===========================')
 
@@ -556,7 +579,13 @@ if __name__ == '__main__':
     elif action == '3':
         ballroom_shuffle.delete_temporary_playlists()
     elif action == '4':
-        ballroom_shuffle.custom_playback()
+        ballroom_playlists = ballroom_shuffle.get_ballroom_playlists()
+        for playlist_name, playlist_id in enumerate(ballroom_playlists):
+            print(f'{playlist_name} : {playlist_id}')
+    elif action == '5':
+        created_playlists = ballroom_shuffle.get_created_playlists()
+        for playlist_name, playlist_id in enumerate(created_playlists):
+            print(f'{playlist_name} : {playlist_id}')
 
     '''
     # TODO: This is for adding songs to an existing playlist or randomly selecting new songs after presenting the selection to user
