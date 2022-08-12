@@ -100,7 +100,7 @@ class Ballroom_Shuffle():
         print("Finished loading music from source playlists.")
 
     def update_all_playlists(self):
-        self.all_playlists_details = self.sp.current_user_playlists()
+        self.all_playlists_details = self.sp.user_playlists(self.user_id)
         for playlist in self.all_playlists_details['items']:
             if not playlist['name'] in self.all_playlists.keys():
                 self.all_playlists[playlist['name']] = playlist
@@ -413,7 +413,7 @@ class Ballroom_Shuffle():
         all_playlist_names = self.all_playlists.keys()
         if playlist_name in all_playlist_names:
             print(f"Removing playlist: {playlist_name}")
-            ballroom_shuffle.sp.current_user_unfollow_playlist(self.all_playlists.get(playlist_name)['id'])
+            ballroom_shuffle.sp.user_unfollow_playlist(self.user_id, self.all_playlists.get(playlist_name)['id'])
         else:
             print(f"Provided playlist name ({playlist_name}) does not exist. Please provide a valid playlist name.")
 
@@ -424,7 +424,7 @@ class Ballroom_Shuffle():
         for playlist_name, playlist_details in self.all_playlists.items():
             if 'Temporary' in playlist_name:
                 print(f"Removing playlist: {playlist_name}")
-                ballroom_shuffle.sp.current_user_unfollow_playlist(playlist_details['id'])
+                ballroom_shuffle.sp.user_unfollow_playlist(self.user_id, playlist_details['id'])
 
     '''
     def custom_playback(self):
